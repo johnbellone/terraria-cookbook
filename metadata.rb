@@ -1,0 +1,17 @@
+name 'terraria'
+maintainer 'John Bellone'
+maintainer_email 'jbellone@bloomberg.net'
+license 'Apache 2.0'
+description 'Application cookbook which installs and configures a Terraria server.'
+long_description 'Application cookbook which installs and configures a Terraria server.'
+version '1.0.0'
+
+supports 'ubuntu', '>= 14.04'
+supports 'centos', '>= 7.1'
+
+depends 'apt'
+depends 'chef-sugar'
+depends 'libartifact'
+depends 'mono'
+depends 'poise-service'
+depends 'yum-centos'
