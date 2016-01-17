@@ -23,6 +23,26 @@ module TerrariaCookbook
       property(:install_method, equal_to: %w{binary}, default: 'binary')
       property(:binary_url, kind_of: String)
       property(:binary_checksum, kind_of: String)
+
+      property(:auto_create, equal_to: [true, false], default: true)
+      property(:force_update, equal_to: [true, false], default: false)
+      property(:world_size, equal_to: %w{small medium large}, default: 'large')
+      property(:max_players, kind_of: Integer, default: 16)
+      property(:world_name, kind_of: String)
+
+      def world_path
+        ::File.join(directory, 'World')
+      end
+
+      def command
+        ['/usr/bin/mono',
+         '/opt/terraria/current/TerrariaServer.exe',
+         "-worldpath #{world_path}"].tap do |c|
+          c << ['-world', world_name] if world_name
+          c << '-forceupdate' if force_update
+          c << '-autocreate 3' if auto_create
+        end.join(' ')
+      end
     end
   end
 
@@ -37,7 +57,7 @@ module TerrariaCookbook
       def action_enable
         include_recipe 'mono::default'
         notifying_block do
-          directory new_resource.directory do
+          directory new_resource.world_path do
             recursive true
             owner new_resource.user
             group new_resource.group
@@ -58,7 +78,7 @@ module TerrariaCookbook
 
       private
       def service_options(service)
-        service.command('/usr/bin/mono /opt/terraria/current/TerrariaServer.exe')
+        service.command(new_resource.command)
         service.user(new_resource.user)
         service.directory(new_resource.directory)
       end
