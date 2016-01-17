@@ -25,6 +25,7 @@ module TerrariaCookbook
       property(:binary_checksum, kind_of: String)
 
       property(:auto_create, equal_to: [true, false], default: true)
+      property(:config_file, kind_of: String, default: '/etc/terraria/terraria.json')
       property(:force_update, equal_to: [true, false], default: false)
       property(:world_size, equal_to: %w{small medium large}, default: 'large')
       property(:max_players, kind_of: Integer, default: 16)
@@ -37,11 +38,12 @@ module TerrariaCookbook
       def command
         ['/usr/bin/mono',
          '/opt/terraria/current/TerrariaServer.exe',
+         "-config #{config_file}",
          "-worldpath #{world_path}"].tap do |c|
           c << ['-world', world_name] if world_name
           c << '-forceupdate' if force_update
           c << '-autocreate 3' if auto_create
-        end.join(' ')
+        end.flatten.join(' ')
       end
     end
   end

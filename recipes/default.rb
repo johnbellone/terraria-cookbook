@@ -12,6 +12,14 @@ poise_service_user node['terraria']['service_user'] do
   home node['terraria']['directory']
 end
 
+terraria_config node['terraria']['service_name'] do |r|
+  path node['terraria']['service']['config_path']
+  user node['terraria']['service_user']
+  group node['terraria']['service_group']
+  node['terraria']['config'].each_pair { |k,v| r.send(k,v) }
+  notifies :restart, "terraria_service[#{name}]", :delayed
+end
+
 terraria_service node['terraria']['service_name'] do |r|
   user node['terraria']['service_user']
   group node['terraria']['service_group']
