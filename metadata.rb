@@ -8,9 +8,9 @@ version '1.0.0'
 
 supports 'ubuntu', '>= 14.04'
 supports 'centos', '>= 7.1'
+supports 'amazon'
 
 depends 'apt'
-depends 'chef-sugar'
 depends 'libartifact'
 depends 'mono'
 depends 'poise-service'
