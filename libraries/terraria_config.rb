@@ -14,11 +14,11 @@ module TerrariaCookbook
       provides(:terraria_config)
 
       property(:path, kind_of: String, name_attribute: true)
-      property(:user, kind_of: String)
+      property(:owner, kind_of: String)
       property(:group, kind_of: String)
       property(:mode, kind_of: String, default: '0640')
 
-      property(:options, option_collector: true, default: {})
+      attribute(:options, option_collector: true, default: {})
 
       action(:create) do
         notifying_block do
@@ -29,7 +29,7 @@ module TerrariaCookbook
 
           rc_file new_resource.path do
             type 'json'
-            content new_resource.options
+            options new_resource.options
             owner new_resource.owner
             group new_resource.group
             mode new_resource.mode
