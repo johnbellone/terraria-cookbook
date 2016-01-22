@@ -4,11 +4,14 @@
 #
 # Copyright 2016, John Bellone <jbellone@bloomberg.net>
 #
-include_recipe 'chef-sugar::default'
-include_recipe 'apt::default' if debian?
-if rhel?
+if platform_family?('debian')
+  include_recipe 'apt::default'
+  include_recipe 'ubuntu::default' if platform?('ubuntu')
+end
+
+if platform_family?('rhel')
   include_recipe 'yum::default', 'yum-epel::default'
-  include_recipe 'yum-centos::default' if centos?
+  include_recipe 'yum-centos::default' if platform?('centos')
 end
 
 poise_service_user node['terraria']['service_user'] do
