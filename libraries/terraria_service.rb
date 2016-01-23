@@ -27,14 +27,14 @@ module TerrariaCookbook
       property(:ip, kind_of: String, default: '0.0.0.0')
       property(:port, kind_of: Integer, default: 7_777)
       property(:auto_create, equal_to: [true, false], default: true)
-      property(:config_path, kind_of: String, default: '/etc/terraria/terraria.json')
+      property(:config_path, kind_of: String, default: '/home/terraria/ServerConfig.json')
       property(:force_update, equal_to: [true, false], default: false)
       property(:world_size, equal_to: %w{small medium large}, default: 'large')
       property(:max_players, kind_of: Integer, default: 16)
-      property(:world_name, kind_of: String, default: 'world')
+      property(:world_name, kind_of: String, default: 'Knot')
 
       def world_path
-        ::File.join(directory, 'worlds')
+        ::File.join(directory, 'Worlds')
       end
 
       def command
