@@ -17,19 +17,21 @@ module TerrariaCookbook
 
       property(:user, kind_of: String, default: 'terraria')
       property(:group, kind_of: String, default: 'terraria')
-      property(:directory, kind_of: String, default: '/var/lib/terraria')
+      property(:directory, kind_of: String, default: '/home/terraria')
 
       property(:version, kind_of: String, required: true)
       property(:install_method, equal_to: %w{binary}, default: 'binary')
       property(:binary_url, kind_of: String)
       property(:binary_checksum, kind_of: String)
 
+      property(:ip, kind_of: String, default: '0.0.0.0')
+      property(:port, kind_of: Integer, default: 7_777)
       property(:auto_create, equal_to: [true, false], default: true)
       property(:config_path, kind_of: String, default: '/etc/terraria/terraria.json')
       property(:force_update, equal_to: [true, false], default: false)
       property(:world_size, equal_to: %w{small medium large}, default: 'large')
       property(:max_players, kind_of: Integer, default: 16)
-      property(:world_name, kind_of: String)
+      property(:world_name, kind_of: String, default: 'world')
 
       def world_path
         ::File.join(directory, 'worlds')
@@ -40,6 +42,8 @@ module TerrariaCookbook
          '/opt/terraria/current/TerrariaServer.exe',
          "-config #{config_path}",
          "-worldpath #{world_path}"].tap do |c|
+          c << ['-ip', ip] if ip
+          c << ['-port', port] if port
           c << ['-world', world_name] if world_name
           c << '-forceupdate' if force_update
           c << '-autocreate 3' if auto_create
@@ -69,8 +73,6 @@ module TerrariaCookbook
           libartifact_file 'terraria' do
             install_path '/opt'
             artifact_version new_resource.version
-            owner new_resource.user
-            group new_resource.group
             remote_url new_resource.binary_url % { version: new_resource.version  }
             remote_checksum new_resource.binary_checksum
           end
@@ -81,6 +83,7 @@ module TerrariaCookbook
       private
       def service_options(service)
         service.command(new_resource.command)
+        service.environment(PATH: '/usr/local/bin:/usr/bin')
         service.user(new_resource.user)
         service.directory(new_resource.directory)
       end

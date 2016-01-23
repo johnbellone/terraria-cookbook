@@ -14,9 +14,15 @@ if platform_family?('rhel')
   include_recipe 'yum-centos::default' if platform?('centos')
 end
 
-poise_service_user node['terraria']['service_user'] do
+group node['terraria']['service_group'] do
+  system true
+end
+
+user node['terraria']['service_user'] do
   group node['terraria']['service_group']
-  home node['terraria']['directory']
+  home node['terraria']['service']['directory']
+  manage_home true
+  system true
 end
 
 terraria_config node['terraria']['service_name'] do |r|
@@ -30,6 +36,5 @@ end
 terraria_service node['terraria']['service_name'] do |r|
   user node['terraria']['service_user']
   group node['terraria']['service_group']
-  directory node['terraria']['directory']
   node['terraria']['service'].each_pair { |k,v| r.send(k,v) }
 end
