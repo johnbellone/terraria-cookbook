@@ -25,6 +25,13 @@ user node['terraria']['service_user'] do
   system true
 end
 
+node['terraria']['plugin'].each_pair do |name, url|
+  terraria_plugin name.split('_').collect(&:capitalize).join do
+    remote_url url
+    notifies :restart, "terraria_service[#{node['terraria']['service_name']}]", :delayed
+  end
+end if node['terraria']['plugin']
+
 terraria_config node['terraria']['service_name'] do |r|
   path node['terraria']['service']['config_path']
   owner node['terraria']['service_user']

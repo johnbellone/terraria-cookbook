@@ -17,3 +17,10 @@ default['terraria']['service']['binary_checksum'] = '5023be8ab499e449b2be41d35e0
 default['terraria']['config']['options']['UseServerName'] = false
 default['terraria']['config']['options']['AllowLoginAnyUsername'] = true
 default['terraria']['config']['options']['AllowRegisterAnyUsername'] = true
+
+default['terraria']['plugin'] = {
+  'essentials+' => 'https://tshock.co/xf/index.php?resources/essentials.6/download&version=322',
+  'server_events' => 'https://tshock.co/xf/index.php?resources/server-events.147/download&version=572',
+  'auto_boss+' => 'https://tshock.co/xf/index.php?resources/autoboss.7/download&version=446',
+  'critical_hit' => 'https://tshock.co/xf/index.php?resources/critical-hits.122/download&version=412'
+}

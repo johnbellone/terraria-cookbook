@@ -8,6 +8,7 @@ require 'poise'
 
 module TerrariaCookbook
   module Resource
+    # A resource which manages Terraria server configuration.
     # @since 1.0
     class TerrariaConfig < Chef::Resource
       include Poise(fused: true)

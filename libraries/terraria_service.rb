@@ -29,12 +29,11 @@ module TerrariaCookbook
       property(:auto_create, equal_to: [true, false], default: true)
       property(:config_path, kind_of: String, default: '/home/terraria/ServerConfig.json')
       property(:force_update, equal_to: [true, false], default: false)
-      property(:world_size, equal_to: %w{small medium large}, default: 'large')
-      property(:max_players, kind_of: Integer, default: 16)
+      property(:max_players, kind_of: Integer, default: 8)
       property(:world_name, kind_of: String, default: 'Knot')
 
       def world_path
-        ::File.join(directory, 'Worlds')
+        ::File.join(directory, 'My Games', 'Worlds')
       end
 
       def command
@@ -44,9 +43,8 @@ module TerrariaCookbook
          "-worldpath #{world_path}"].tap do |c|
           c << ['-ip', ip] if ip
           c << ['-port', port] if port
-          c << ['-world', world_name] if world_name
+          c << ['-worldname', world_name] if world_name
           c << '-forceupdate' if force_update
-          c << '-autocreate 3' if auto_create
         end.flatten.join(' ')
       end
     end
